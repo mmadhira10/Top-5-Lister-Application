@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import AuthContext from '../auth'
 import Copyright from './Copyright'
+import { GlobalStoreContext } from '../store';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -15,7 +16,8 @@ import Typography from '@mui/material/Typography';
 import ErrorModal from './ErrorModal';
 
 export default function RegisterScreen() {
-    const { auth } = useContext(AuthContext);
+    const { auth } = useContext( AuthContext );
+    const { store } = useContext( GlobalStoreContext );
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,7 +27,8 @@ export default function RegisterScreen() {
             formData.get('lastName'),
             formData.get('email'),
             formData.get('password'),
-            formData.get('passwordVerify')
+            formData.get('passwordVerify'),
+            store
         );
     };
 

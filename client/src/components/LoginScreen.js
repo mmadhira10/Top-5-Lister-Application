@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import AuthContext from '../auth'
+import AuthContext from '../auth';
+import { GlobalStoreContext } from '../store';
 
 import Copyright from './Copyright'
 import ErrorModal from './ErrorModal'
@@ -18,15 +19,16 @@ import Typography from '@mui/material/Typography';
 
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         auth.loginUser(
             formData.get('email'),
-            formData.get('password')
+            formData.get('password'),
+            store
         );
-
     };
 
     return (

@@ -103,7 +103,7 @@ registerUser = async (req, res) => {
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
-        console.log("all fields provided");
+
         if (password.length < 8) {
             return res
                 .status(400)
