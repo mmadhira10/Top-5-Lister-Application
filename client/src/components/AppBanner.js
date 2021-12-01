@@ -21,7 +21,10 @@ export default function AppBanner() {
     const isMenuOpen = Boolean(anchorEl);
 
     const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+        if(auth.loggedIn)
+        {
+            setAnchorEl(event.currentTarget);
+        }
     };
 
     const handleMenuClose = () => {
@@ -34,26 +37,7 @@ export default function AppBanner() {
     }
 
     const menuId = 'primary-search-account-menu';
-    const loggedOutMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
-        </Menu>
-    );
+
     const loggedInMenu = 
         <Menu
             anchorEl={anchorEl}
@@ -68,26 +52,25 @@ export default function AppBanner() {
                 horizontal: 'right',
             }}
             open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
+            onClose={handleMenuClose}>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>        
 
     let editToolbar = "";
-    let menu = loggedOutMenu;
-    if (auth.loggedIn) {
+    let menu;
+    if (auth.loggedIn || auth.guest) {
         menu = loggedInMenu;
         if (store.currentList) {
             editToolbar = <EditToolbar />;
         }
     }
     
-    function getAccountMenu(loggedIn) {
+    function getAccountMenu(loggedIn, guest) {
         let userInitials = auth.getUserInitials();
         console.log("userInitials: " + userInitials);
         if (loggedIn) 
             return <div>{userInitials}</div>;
-        else
+        else if (guest)
             return <AccountCircle />;
     }
 
@@ -114,7 +97,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu( auth.loggedIn ) }
+                            { getAccountMenu(auth.loggedIn, auth.guest) }
                         </IconButton>
                     </Box>
                 </Toolbar>

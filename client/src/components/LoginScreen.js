@@ -16,8 +16,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 export default function LoginScreen() {
+    const theme = createTheme();
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
 
@@ -32,6 +35,7 @@ export default function LoginScreen() {
     };
 
     return (
+        <ThemeProvider theme={theme}>
         <Grid container component="main" sx={{ height: '100vh' }}>
             <CssBaseline />
             <Grid
@@ -115,5 +119,6 @@ export default function LoginScreen() {
                 </Box>
             </Grid>
         </Grid>
+        </ThemeProvider>
     );
 }

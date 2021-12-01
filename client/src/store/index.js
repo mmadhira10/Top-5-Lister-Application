@@ -183,7 +183,7 @@ function GlobalStoreContextProvider(props) {
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                 payload: {
                                     idNamePairs: pairsArray,
-                                    top5List: top5List
+                                    top5List: null
                                 }
                             });
                         }
