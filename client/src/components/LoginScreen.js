@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import AuthContext from '../auth'
 
 import Copyright from './Copyright'
-
+import ErrorModal from './ErrorModal'
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -107,6 +107,7 @@ export default function LoginScreen() {
                                 </Link>
                             </Grid>
                         </Grid>
+                        <ErrorModal />
                         <Copyright sx={{ mt: 5 }} />
                     </Box>
                 </Box>

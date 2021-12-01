@@ -114,7 +114,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            { getAccountMenu( auth.loggedIn ) }
                         </IconButton>
                     </Box>
                 </Toolbar>

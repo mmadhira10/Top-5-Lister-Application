@@ -10,7 +10,8 @@ export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    ERROR_MSG: "ERROR_MSG"
 }
 
 function AuthContextProvider(props) {
@@ -67,6 +68,15 @@ function AuthContextProvider(props) {
                 }
             });
         }
+    }
+
+    auth.closeErrorModal = async function() {
+        authReducer({
+            type: AuthActionType.ERROR_MSG,
+            payload:{
+                error: ""
+            }
+        })
     }
 
     auth.registerUser = async function(firstName, lastName, email, password, passwordVerify) {
