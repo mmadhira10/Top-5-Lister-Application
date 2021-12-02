@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
-
+import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
@@ -39,22 +39,21 @@ const HomeScreen = () => {
     }
     return (
         <div id="top5-list-selector">
-            <div id="list-selector-heading">
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-            >
-                <AddIcon />
-            </Fab>
-                <Typography variant="h2">Your Lists</Typography>
-            </div>
             <div id="list-selector-list">
                 {
                     listCard
                 }
                 <MUIDeleteModal />
+            </div>
+            <div id="list-selector-footer">
+            <Fab 
+                color="default" 
+                id="add-list-button"
+                onClick={handleCreateNewList}
+            >
+                <Typography variant="h3">+</Typography>
+            </Fab>
+                <Typography variant="h3">Your Lists</Typography>
             </div>
         </div>)
 }

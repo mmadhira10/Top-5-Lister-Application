@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 export default function SplashScreen() {
 
-
     return (
         <div id="splash-screen">
             <div id="title-app">

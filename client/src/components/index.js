@@ -7,7 +7,6 @@ import ListCard from './ListCard'
 import LoginScreen from './LoginScreen'
 import RegisterScreen from './RegisterScreen'
 import SplashScreen from './SplashScreen'
-import Statusbar from './Statusbar'
 import Top5Item from './Top5Item'
 import WorkspaceScreen from './WorkspaceScreen'
 /*
@@ -26,6 +25,5 @@ export {
     LoginScreen,
     RegisterScreen,
     SplashScreen,
-    Statusbar, 
     Top5Item, 
     WorkspaceScreen }
