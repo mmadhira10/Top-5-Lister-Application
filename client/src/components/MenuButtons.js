@@ -7,33 +7,36 @@ import FunctionsIcon from '@mui/icons-material/Functions';
 import FilledInput from '@mui/material/FilledInput';
 import SortIcon from '@mui/icons-material/Sort';
 import Toolbar from '@mui/material/Toolbar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
+import { React, useContext, useState } from "react";
 
 
 
 export default function MenuButtons() {
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+
+
     return(
         <div id="menu-buttons">
             <Toolbar>
-            <IconButton
-            size="large">
-                <HomeOutlinedIcon 
-                fontSize="large"/>
-            </IconButton>
-            <IconButton
-            size="large">
-                <GroupOutlinedIcon 
-                fontSize="large"/>
-            </IconButton>
-            <IconButton
-            size="large">
-                <PersonOutlineIcon 
-                fontSize="large"/>
-            </IconButton>
-            <IconButton
-            size="large">
-                <FunctionsIcon 
-                fontSize="large"/>
-            </IconButton>
+                <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
+                    <Tab icon={<HomeOutlinedIcon 
+                    fontSize="large"/>} label="HOME" />
+                    <Tab icon={<GroupOutlinedIcon 
+                    fontSize="large"/>} label="ALL LISTS" />
+                    <Tab icon={<PersonOutlineIcon 
+                    fontSize="large"/>} label="USER'S LIST"/>
+                    <Tab icon={<FunctionsIcon 
+                    fontSize="large"/>} label="COMMUNITY LISTS"/>
+                </Tabs>
+
             <FilledInput 
                 autoComplete
                 placeholder="Search"
