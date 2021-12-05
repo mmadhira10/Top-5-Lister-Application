@@ -139,12 +139,9 @@ body {
   background-color: var(--swatch-accent);
 }
 
-
-
 #list-selector-footer {
   position: absolute;
-  left: 0%;
-  top: 0%;
+  bottom: 0%;
   width: 100%;
   height: 10%;
   text-align: center;
@@ -169,6 +166,20 @@ body {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  background-color: #a3a3a3;
+}
+
+#menu-buttons {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  vertical-align: center;
+  text-align: center;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  width: 100%;
+  height: 10%;
+  float: left;
+  font-size: 16pt;
   background-color: #a3a3a3;
 }
 

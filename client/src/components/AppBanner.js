@@ -86,6 +86,7 @@ export default function AppBanner() {
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
             color="inherit"
+            edge="end"
         >
             { getAccountMenu(auth.loggedIn, auth.guest) }
         </IconButton>

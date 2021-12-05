@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
+import MenuButtons from './MenuButtons';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
@@ -39,12 +40,14 @@ const HomeScreen = () => {
     }
     return (
         <div id="top5-list-selector">
+            <MenuButtons />
             <div id="list-selector-list">
                 {
                     listCard
                 }
                 <MUIDeleteModal />
             </div>
+            
             <div id="list-selector-footer">
             <Fab 
                 color="default" 
@@ -53,7 +56,7 @@ const HomeScreen = () => {
             >
                 <Typography variant="h3">+</Typography>
             </Fab>
-                <Typography variant="h3">Your Lists</Typography>
+            <Typography variant="h3">Your Lists</Typography>
             </div>
         </div>)
 }
