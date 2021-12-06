@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import api from './auth-request-api'
 
 const AuthContext = createContext();
-console.log("create AuthContext: " + AuthContext);
+
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -118,7 +118,6 @@ function AuthContextProvider(props) {
         }
         catch(err)
         {
-            console.log(err);
             
             let msg = err.response.data.errorMessage
             authReducer({
@@ -148,7 +147,6 @@ function AuthContextProvider(props) {
         {
             let e = err;
 
-            console.log(err);
             let msg = err.response.data.errorMessage
             authReducer({
                 type: AuthActionType.ERROR_MSG,
@@ -185,7 +183,6 @@ function AuthContextProvider(props) {
             initials += auth.user.firstName.charAt(0);
             initials += auth.user.lastName.charAt(0);
         }
-        console.log("user initials: " + initials);
         return initials;
     }
 

@@ -126,7 +126,7 @@ body {
   left: 0%;
   top: 10%;
   width: 100%;
-  height: 100%;
+  height: 110%;
   background-color: var(--swatch-primary);
 }
 
@@ -141,7 +141,7 @@ body {
 
 #list-selector-footer {
   position: absolute;
-  bottom: 0%;
+  bottom: -7.7%;
   width: 100%;
   height: 10%;
   text-align: center;
@@ -160,7 +160,7 @@ body {
 #list-selector-list {
   position: absolute;
   left: 0%;
-  top: 13%;
+  top: 10%;
   width: 100%;
   height: 90%;
   display: flex;
@@ -177,10 +177,13 @@ body {
   text-align: center;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   width: 100%;
-  height: 13%;
+  height: 10%;
   float: left;
   font-size: 16pt;
   background-color: #a3a3a3;
+}
+#menu-sort{
+  margin-left: 350px;
 }
 
 .list-card,

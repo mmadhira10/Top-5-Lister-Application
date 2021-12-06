@@ -32,6 +32,7 @@ const HomeScreen = () => {
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
+                        username={pair.email}
                         selected={false}
                     />
                 ))

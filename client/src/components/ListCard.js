@@ -6,6 +6,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -18,16 +21,14 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected } = props;
+    const { idNamePair, selected, username } = props;
 
     function handleLoadList(event, id) {
-        console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
 
-            console.log("load " + event.target.id);
 
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
@@ -69,6 +70,7 @@ function ListCard(props) {
     if (selected) {
         selectClass = "selected-list-card";
     }
+
     let cardStatus = false;
     if (store.isListNameEditActive) {
         cardStatus = true;
@@ -77,28 +79,29 @@ function ListCard(props) {
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
+            button
             sx={{ marginTop: '0px', display: 'flex', p: 1 }}
             style={{ width: '100%' }}
-            button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }
-            }
             style={{
-                fontSize: '36pt'
+                fontSize: '24pt'
             }}
         >
-                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-                <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                        <EditIcon style={{fontSize:'36pt'}} />
-                    </IconButton>
+                <Box sx={{ p: 1, flexGrow: 1 }}>
+                    {idNamePair.name}
+                    <Typography style={{fontSize:'12pt'}} 
+                    style={{textDecoration:"underline"}} 
+                    color="text.secondary" 
+                    onClick={(event) => {
+                        handleLoadList(event, idNamePair._id)}}
+                        button>
+                            Edit</Typography>
+                    <Typography style={{fontSize:'12pt'}}>By:  {username}</Typography>
                 </Box>
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
-                        <DeleteIcon style={{fontSize:'36pt'}} />
+                        <DeleteIcon style={{fontSize:'24pt'}} />
                     </IconButton>
                 </Box>
         </ListItem>

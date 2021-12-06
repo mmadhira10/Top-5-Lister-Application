@@ -209,8 +209,9 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.newListCounter;
-        const response = await api.createTop5List(newListName, ["?", "?", "?", "?", "?"], auth.user.email);
-        console.log("createNewList response: " + response);
+        const response = await api.createTop5List(newListName, ["?", "?", "?", "?", "?"], auth.user.email, 
+            Date().toLocaleString().substring(4, 15));
+        console.log(Date().toLocaleString().substring(4, 15))
         if (response.status === 201) {
             tps.clearAllTransactions();
             let newList = response.data.top5List;
@@ -230,7 +231,6 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        console.log("store.loadIdNamePairs");
         const response = await api.getTop5ListPairs();
         if (response.status === 200) {
             let pairsArray = response.data.idNamePairs;

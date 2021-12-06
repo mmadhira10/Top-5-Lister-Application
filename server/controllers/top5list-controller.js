@@ -41,8 +41,6 @@ createTop5List = (req, res) => {
     })
 }
 deleteTop5List = async (req, res) => {
-    console.log("delete Top 5 List with id: " + JSON.stringify(req.params.id));
-    console.log("delete " + req.params.id);
     Top5List.findById({ _id: req.params.id }, (err, top5List) => {
         console.log("top5List found: " + JSON.stringify(top5List));
         if (err) {
@@ -112,20 +110,25 @@ getTop5ListPairs = async (req, res) => {
                     return res.status(400).json({ success: false, error: err })
                 }
                 if (!top5Lists) {
-                    console.log("!top5Lists.length");
                     return res
                         .status(404)
                         .json({ success: false, error: 'Top 5 Lists not found' })
                 }
                 else {
-                    console.log("Send the Top5List pairs");
                     // PUT ALL THE LISTS INTO ID, NAME PAIRS
                     let pairs = [];
                     for (let key in top5Lists) {
                         let list = top5Lists[key];
                         let pair = {
                             _id: list._id,
-                            name: list.name
+                            name: list.name,
+                            email: list.ownerEmail,
+                            views: list.views,
+                            likes: list.likes,
+                            dislikes: list.dislikes,
+                            comments: list.comments,
+                            date: list.date,
+                            publish: list.publish
                         };
                         pairs.push(pair);
                     }
@@ -136,6 +139,7 @@ getTop5ListPairs = async (req, res) => {
         asyncFindList(user.email);
     }).catch(err => console.log(err))
 }
+
 getTop5Lists = async (req, res) => {
     await Top5List.find({}, (err, top5Lists) => {
         if (err) {
@@ -149,6 +153,7 @@ getTop5Lists = async (req, res) => {
         return res.status(200).json({ success: true, data: top5Lists })
     }).catch(err => console.log(err))
 }
+
 updateTop5List = async (req, res) => {
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));

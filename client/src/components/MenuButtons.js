@@ -11,6 +11,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 import { React, useContext, useState } from "react";
+import { TextField } from '@mui/material';
 
 
 
@@ -22,30 +23,32 @@ export default function MenuButtons() {
     };
 
 
-
     return(
         <div id="menu-buttons">
             <Toolbar>
                 <Tabs value={value} onChange={handleChange} aria-label="icon label tabs">
                     <Tab icon={<HomeOutlinedIcon 
-                    fontSize="large"/>} label="HOME" />
+                    fontSize="medium"/>} label="HOME" />
                     <Tab icon={<GroupOutlinedIcon 
-                    fontSize="large"/>} label="ALL LISTS" />
+                    fontSize="medium"/>} label="ALL LISTS" />
                     <Tab icon={<PersonOutlineIcon 
-                    fontSize="large"/>} label="USER'S LIST"/>
+                    fontSize="medium"/>} label="USER'S LIST"/>
                     <Tab icon={<FunctionsIcon 
-                    fontSize="large"/>} label="COMMUNITY LISTS"/>
+                    fontSize="medium"/>} label="COMMUNITY LISTS"/>
                 </Tabs>
 
-            <FilledInput 
-                autoComplete
+            <TextField
+                margin="normal"
                 placeholder="Search"
-                color="secondary"/>
+                color="secondary"
+                size="small"
+                />
             <Typography                        
                         variant="h8"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}                        
+                        sx={{ display: { xs: 'none', sm: 'block' } }}     
+                        id="menu-sort"                   
                     >SORT BY</Typography>
             <IconButton
             size="large"
