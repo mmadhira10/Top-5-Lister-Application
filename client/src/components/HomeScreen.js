@@ -24,15 +24,17 @@ const HomeScreen = () => {
         store.createNewList();
     }
     let listCard = "";
+    console.log(store.idNamePairs)
     if (store) {
         listCard = 
-            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
+            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.grey' }}>
             {
                 store.idNamePairs.map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
                         username={pair.email}
+                        views={pair.views}
                         selected={false}
                     />
                 ))

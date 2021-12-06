@@ -2,13 +2,17 @@ import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
-import Divider from '@mui/material/Divider';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -21,14 +25,13 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected, username } = props;
+    const { idNamePair, selected, username, views } = props;
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
-
 
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
@@ -62,8 +65,13 @@ function ListCard(props) {
             toggleEdit();
         }
     }
+
     function handleUpdateText(event) {
         setText(event.target.value);
+    }
+
+    function handleViewCount() {
+        store.updateViewCount(idNamePair._id);
     }
 
     let selectClass = "unselected-list-card";
@@ -76,10 +84,11 @@ function ListCard(props) {
         cardStatus = true;
     }
     let cardElement =
-        <ListItem
+    <Accordion onChange={handleViewCount}>
+        <AccordionSummary
             id={idNamePair._id}
             key={idNamePair._id}
-            button
+            expandIcon={<ExpandMoreIcon />}
             sx={{ marginTop: '0px', display: 'flex', p: 1 }}
             style={{ width: '100%' }}
             style={{
@@ -88,12 +97,12 @@ function ListCard(props) {
         >
                 <Box sx={{ p: 1, flexGrow: 1 }}>
                     {idNamePair.name}
+                    
                     <Typography style={{fontSize:'12pt'}} 
                     style={{textDecoration:"underline"}} 
                     color="text.secondary" 
                     onClick={(event) => {
-                        handleLoadList(event, idNamePair._id)}}
-                        button>
+                    handleLoadList(event, idNamePair._id)}}>
                             Edit</Typography>
                     <Typography style={{fontSize:'12pt'}}>By:  {username}</Typography>
                 </Box>
@@ -104,7 +113,28 @@ function ListCard(props) {
                         <DeleteIcon style={{fontSize:'24pt'}} />
                     </IconButton>
                 </Box>
-        </ListItem>
+                <Box sx={{ p: 1 }}>
+                    <Typography style={{fontSize:'8pt'}}>views: {views}</Typography>
+                </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            1) {idNamePair.items[0]}
+          </Typography>
+          <Typography>
+            2) {idNamePair.items[1]}
+          </Typography>
+          <Typography>
+            3) {idNamePair.items[2]}
+          </Typography>
+          <Typography>
+            4) {idNamePair.items[3]}
+          </Typography>
+          <Typography>
+            5) {idNamePair.items[4]}
+          </Typography>
+        </AccordionDetails>
+    </Accordion>
 
     if (editActive) {
         cardElement =

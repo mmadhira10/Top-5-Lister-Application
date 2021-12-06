@@ -33,7 +33,8 @@ export const createTop5List = (newListName, newItems, userEmail, setdate) => {
         dislikes: [],
         comments: [],
         date: setdate,
-        publish: false
+        publish: false, 
+        is_viewed: false
     })
 }
 export const deleteTop5ListById = (id) => api.delete(`/top5list/${id}`)

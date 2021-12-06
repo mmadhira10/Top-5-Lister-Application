@@ -40,6 +40,7 @@ createTop5List = (req, res) => {
             });
     })
 }
+
 deleteTop5List = async (req, res) => {
     Top5List.findById({ _id: req.params.id }, (err, top5List) => {
         console.log("top5List found: " + JSON.stringify(top5List));
@@ -71,6 +72,7 @@ deleteTop5List = async (req, res) => {
         asyncFindUser(top5List);
     })
 }
+
 getTop5ListById = async (req, res) => {
     console.log("Find Top 5 List with id: " + JSON.stringify(req.params.id));
 
@@ -98,6 +100,7 @@ getTop5ListById = async (req, res) => {
         asyncFindUser(list);
     }).catch(err => console.log(err))
 }
+
 getTop5ListPairs = async (req, res) => {
     console.log("getTop5ListPairs");
     await User.findOne({ _id: req.userId }, (err, user) => {
@@ -121,6 +124,7 @@ getTop5ListPairs = async (req, res) => {
                         let list = top5Lists[key];
                         let pair = {
                             _id: list._id,
+                            items: list.items,
                             name: list.name,
                             email: list.ownerEmail,
                             views: list.views,
@@ -128,7 +132,8 @@ getTop5ListPairs = async (req, res) => {
                             dislikes: list.dislikes,
                             comments: list.comments,
                             date: list.date,
-                            publish: list.publish
+                            publish: list.publish,
+                            is_viewed: list.is_viewed
                         };
                         pairs.push(pair);
                     }
@@ -186,6 +191,15 @@ updateTop5List = async (req, res) => {
 
                     list.name = body.top5List.name;
                     list.items = body.top5List.items;
+                    list.views = body.top5List.views;
+                    list.comments = body.top5List.comments;
+                    list.likes = body.top5List.likes;
+                    list.dislikes = body.top5List.dislikes;
+                    list.ownerEmail = body.top5List.ownerEmail;
+                    list.publish = body.top5List.publish;
+                    list.date = body.top5List.date;
+                    list.is_viewed = body.top5List.is_viewed;
+
                     list
                         .save()
                         .then(() => {

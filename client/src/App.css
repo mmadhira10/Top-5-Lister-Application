@@ -135,13 +135,13 @@ body {
   left: 0%;
   top: 10%;
   width: 100%;
-  height: 80%;
-  background-color: var(--swatch-accent);
+  height: 90%;
+  background-color: #e4d69d;
 }
 
 #list-selector-footer {
   position: absolute;
-  bottom: -7.7%;
+  bottom: -8.6%;
   width: 100%;
   height: 10%;
   text-align: center;
@@ -160,7 +160,7 @@ body {
 #list-selector-list {
   position: absolute;
   left: 0%;
-  top: 10%;
+  top: 11%;
   width: 100%;
   height: 90%;
   display: flex;
@@ -177,7 +177,7 @@ body {
   text-align: center;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   width: 100%;
-  height: 10%;
+  height: 11%;
   float: left;
   font-size: 16pt;
   background-color: #a3a3a3;
@@ -229,7 +229,7 @@ body {
   left: 0%;
   top: 0%;
   width: 100%;
-  height: 100%;
+  height: 70%;
 }
 
 #edit-numbering {
@@ -238,21 +238,19 @@ body {
   top: 0%;
   width: 20%;
   height: 100%;
-  background-color: var(--swatch-status);
+  background-color: #a3a3a3;
 }
 
 #edit-items {
   position: absolute;
-  left: 20%;
-  top: 0%;
-  width: 80%;
-  height: 100%;
-  background-color: var(--swatch-primary);
+  top: 25%;
+  width: 100%;
+  height: 114%;
+  background-color: rgb(208, 207, 207);
 }
 
-.item-number,
-.top5-item,
-.top5-item-dragged-to {
+
+.top5-item {
   display: flex;
   align-items: center;
   font-size: 48pt;
@@ -264,7 +262,7 @@ body {
   width: 100%;
   border: 1px 0px 1px 1px;
   border-color: black;
-  background-color: linen;
+  background-color: #a3a3a3;
   color: black;
 }
 
@@ -272,14 +270,13 @@ input {
   font-size: 20pt;
 }
 
-.top5-item,
-.top5-item-dragged-to {
+.top5-item{
   text-align: left;
-  width: 95%;
-  padding-left: 5%;
+  width: 100%;
+  padding-left: 0%;
 }
 .top5-item {
-  background-color: var(--swatch-complement);
+  background-color: lightgray;
 }
 .top5-item-dragged-to {
   background-color: var(--swatch-accent);
@@ -292,6 +289,7 @@ input {
 .disabled:hover {
   color: var(--swatch-neutral);
 }
+
 
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
