@@ -133,7 +133,6 @@ getTop5ListPairs = async (req, res) => {
                             comments: list.comments,
                             date: list.date,
                             publish: list.publish,
-                            is_viewed: list.is_viewed
                         };
                         pairs.push(pair);
                     }
@@ -198,8 +197,6 @@ updateTop5List = async (req, res) => {
                     list.ownerEmail = body.top5List.ownerEmail;
                     list.publish = body.top5List.publish;
                     list.date = body.top5List.date;
-                    list.is_viewed = body.top5List.is_viewed;
-
                     list
                         .save()
                         .then(() => {

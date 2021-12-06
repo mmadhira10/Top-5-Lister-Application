@@ -7,11 +7,13 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import Grid from '@mui/material/Grid';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+
+
 
 
 /*
@@ -25,30 +27,19 @@ function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
-    const { idNamePair, selected, username, views } = props;
+    const [view, setView] = useState(false)
+    const [views, setViews ] = useState(props.views)
+    const { idNamePair, selected, username, publish, date, likes, dislikes, currUser } = props;
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
-            let _id = event.target.id;
-            if (_id.indexOf('list-card-text-') >= 0)
-                _id = ("" + _id).substring("list-card-text-".length);
 
+            //console.log(id)
+            //console.log(idNamePair._id)
             // CHANGE THE CURRENT LIST
+            console.log(idNamePair.views)
             store.setCurrentList(id);
         }
-    }
-
-    function handleToggleEdit(event) {
-        event.stopPropagation();
-        toggleEdit();
-    }
-
-    function toggleEdit() {
-        let newActive = !editActive;
-        if (newActive) {
-            store.setIsListNameEditActive();
-        }
-        setEditActive(newActive);
     }
 
     async function handleDeleteList(event, id) {
@@ -58,20 +49,72 @@ function ListCard(props) {
         store.markListForDeletion(id);
     }
 
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
-            toggleEdit();
+    function handleViewCount() 
+    {
+        if(!view)
+        {
+            setView(true);
+            store.updateViewCount(idNamePair._id);
+            setViews(views + 1)
         }
+        else{
+            setView(false);
+        }   
     }
 
-    function handleUpdateText(event) {
-        setText(event.target.value);
+    function handleLikeButton(event, id)
+    {
+        event.stopPropagation();
+        store.updateLikes(id);
     }
 
-    function handleViewCount() {
-        store.updateViewCount(idNamePair._id);
+    function handleDislikeButton(event, id)
+    {
+        event.stopPropagation();
+        store.updateDislikes(id);
+    }
+
+
+    //IF PUBLISH THEN REMOVE EDIT BUTTON AND PUT DATE
+    let editOrPub = 
+        <Typography style={{fontSize:'12pt'}} 
+        style={{textDecoration:"underline"}} 
+        color="text.secondary" 
+        onClick={(event) => {
+        handleLoadList(event, idNamePair._id)}}>
+            Edit</Typography>
+
+    if (publish)
+    {
+        editOrPub = 
+            <Typography style={{fontSize:'12pt'}}>
+            Date Published: {date}</Typography>
+    }
+
+
+    //IF PUBLISH SET UP LIKE BUTTON AND DISLIKE BUTTON
+    let likeButton = "";
+    let dislikeButton = "";
+    let likesnumber;
+    let dislikesnumber;
+    if (publish)
+    {
+        likesnumber= likes.length;
+        likeButton = 
+            <IconButton onClick={(event) => {
+                handleLikeButton(event, idNamePair._id)
+            }}>
+                <ThumbUpOutlinedIcon />
+            </IconButton>;
+        
+        dislikesnumber= dislikes.length;
+        dislikeButton = 
+            <IconButton onClick={(event) => {
+                handleDislikeButton(event, idNamePair._id)
+            }}>
+                <ThumbDownOutlinedIcon />
+            </IconButton>;
+        
     }
 
     let selectClass = "unselected-list-card";
@@ -83,77 +126,118 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
+    // CONDITIONS FOR A PUBLISHED AND NON PUBLISHED LIST CARD
     let cardElement =
-    <Accordion onChange={handleViewCount}>
-        <AccordionSummary
+    <Grid xs={12}>
+        <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             expandIcon={<ExpandMoreIcon />}
-            sx={{ marginTop: '0px', display: 'flex', p: 1 }}
+            sx={{ marginTop: '0px', display: 'flex', p: 1, borderRadius:'25px', border: "1px solid"}}
             style={{ width: '100%' }}
             style={{
                 fontSize: '24pt'
             }}
+            style={{backgroundColor:"white"}}
         >
-                <Box sx={{ p: 1, flexGrow: 1 }}>
+                <Box sx={{ p: 1, flexGrow: 1 }}
+                style={{
+                    fontSize: '24pt'
+                }}>
                     {idNamePair.name}
-                    
-                    <Typography style={{fontSize:'12pt'}} 
-                    style={{textDecoration:"underline"}} 
-                    color="text.secondary" 
-                    onClick={(event) => {
-                    handleLoadList(event, idNamePair._id)}}>
-                            Edit</Typography>
+
+                    {editOrPub}
+
                     <Typography style={{fontSize:'12pt'}}>By:  {username}</Typography>
                 </Box>
+                
+                <Box sx={{p: 5}}
+                style={{
+                    fontSize: '12pt'
+                }}>
+                    {likeButton}
+                    {likesnumber}
+                </Box>
+                <Box sx={{p: 5}}
+                style={{
+                    fontSize: '12pt'
+                }}>
+                    {dislikeButton}
+                    {dislikesnumber}
+                </Box>
+
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
                         <DeleteIcon style={{fontSize:'24pt'}} />
                     </IconButton>
-                </Box>
-                <Box sx={{ p: 1 }}>
                     <Typography style={{fontSize:'8pt'}}>views: {views}</Typography>
+                    <IconButton onClick={handleViewCount}>
+                        <ExpandMoreIcon style={{fontSize: '24pt'}}/>
+                    </IconButton>
                 </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            1) {idNamePair.items[0]}
-          </Typography>
-          <Typography>
-            2) {idNamePair.items[1]}
-          </Typography>
-          <Typography>
-            3) {idNamePair.items[2]}
-          </Typography>
-          <Typography>
-            4) {idNamePair.items[3]}
-          </Typography>
-          <Typography>
-            5) {idNamePair.items[4]}
-          </Typography>
-        </AccordionDetails>
-    </Accordion>
+            </ListItem>
+        </Grid>
 
-    if (editActive) {
+    if (view) {
         cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Top 5 List Name"
-                name="name"
-                autoComplete="Top 5 List Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
-                autoFocus
-            />
+        <Grid xs={12}>
+            <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            expandIcon={<ExpandLessIcon />}
+            sx={{ marginTop: '0px', display: 'flex', p: 1, borderRadius:'25px', border: "1px solid"}}
+            style={{ width: '100%' }}
+            style={{backgroundColor:"white"}}
+        >
+                <Box sx={{ p: 1, flexGrow: 1 }}
+                style={{
+                    fontSize: '24pt'
+                }}>
+                    {idNamePair.name}
+
+                    {editOrPub}
+
+                    <Typography style={{fontSize:'12pt'}}>By:  {username}</Typography>
+                    <Box>
+                        <Typography>1. {idNamePair.items[0]} </Typography>
+                        <Typography>2. {idNamePair.items[1]}</Typography>
+                        <Typography>3. {idNamePair.items[2]}</Typography>
+                        <Typography>4. {idNamePair.items[3]}</Typography>
+                        <Typography>5. {idNamePair.items[4]}</Typography>
+                    </Box>
+                </Box>
+
+                <Box sx={{p: 5}}
+                style={{
+                    fontSize: '12pt'
+                }}>
+                    {likeButton}
+                    {likesnumber}
+                </Box>
+                <Box sx={{p: 5}}
+                style={{
+                    fontSize: '12pt'
+                }}>
+                    {dislikeButton}
+                    {dislikesnumber}
+                </Box>
+
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <DeleteIcon style={{fontSize:'24pt'}} />
+                    </IconButton>
+                    <Typography style={{fontSize:'8pt'}}>views: {views}</Typography>
+                    <IconButton onClick={handleViewCount}>
+                        <ExpandLessIcon style={{fontSize: '24pt'}}/>
+                    </IconButton>
+                </Box>
+            </ListItem>
+        </Grid>
     }
     return (
         cardElement

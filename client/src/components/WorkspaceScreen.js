@@ -15,32 +15,37 @@ import TextField from '@mui/material/TextField';
 */
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
-    const [text, setText] = useState("");
-    const arr = new Array(5)
-    let title = store.currentList.name;
+    const [title, setTitle] = useState(store.currentList.name);
+    const arr = store.currentList.items;
 
     function handleUpdateText(event) {
-        setText(event.target.value);
-        let index = event.target.id.substring(6)
-        arr[index] = event.target.value;
+        let index = event.target.id.substring(5) - 1;
+        setArrayIndex(arr, index, event.target.value)
+    }
+
+    function setArrayIndex(array, index, newVal)
+    {
+        array[index] = newVal
     }
 
     function handleUpdateTitle(event)
     {
-        console.log(store.currentList.name)
-        setText(event.target.value);
-        title = event.target.value
+        setTitle(event.target.value);
     }
 
     function handleSave(event) 
     {
         event.stopPropagation();
-        store.changeItemNames(store.currentList._id, arr)
-        store.changeListName(store.currentList._id, title)
+        store.changeTop5List(store.currentList._id, title, arr);
+        
     }
 
-    function handlePublish(event) {
-
+    function handlePublish(event) 
+    {
+        event.stopPropagation();
+        let identification = store.currentList._id
+        store.changeTop5List(store.currentList._id, title, arr);
+        store.updatePublish(identification);
     }
 
     let editItems = "";

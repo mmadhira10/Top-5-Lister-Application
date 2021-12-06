@@ -12,7 +12,6 @@ const Top5ListSchema = new Schema(
         comments: {type: [(String, String)], required: true},
         date: {type: String, required: true},
         publish: {type: Boolean, required: true},
-        is_viewed: {type: Boolean, required: true}
     },
     { timestamps: true },
 )

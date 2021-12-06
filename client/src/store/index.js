@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import api from './store-request-api'
 import AuthContext from '../auth'
+import { listItemTextClasses } from '@mui/material';
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
@@ -203,7 +204,6 @@ function GlobalStoreContextProvider(props) {
             }
             updateList(top5List);
         }
-        history.push("/");
     }
 
     //THIS FUNCTION INCREASES THE VIEW COUNT
@@ -213,7 +213,10 @@ function GlobalStoreContextProvider(props) {
         if (response.status === 200) 
         {
             let top5List = response.data.top5List;
+                console.log(items);
+                console.log(top5List.items);
                 top5List.items = items;
+
                 async function updateList(top5List) {
                     response = await api.updateTop5ListById(id, top5List);
                     if (response.status === 200) {
@@ -234,6 +237,19 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.changeTop5List = function(id, title, list)
+    {
+        console.log(list)
+        
+        store.changeItemNames(id, list);
+        
+        store.changeListName(id, title);
+        
+        store.loadIdNamePairs();
+        
+        history.push("/")
+    }
+
 
     //THIS FUNCTION INCREASES THE VIEW COUNT
     store.updateViewCount = async function (id)
@@ -242,15 +258,7 @@ function GlobalStoreContextProvider(props) {
         if (response.status === 200) 
         {
             let top5List = response.data.top5List;
-            if(!top5List.is_viewed)
-            {
-                top5List.views = top5List.views + 1;
-                top5List.is_viewed = true;
-            }
-            else
-            {
-                top5List.is_viewed = false;
-            }
+            top5List.views = top5List.views + 1;
                 console.log(top5List.views)
                 async function updateList(top5List) {
                     console.log(top5List)
@@ -274,6 +282,96 @@ function GlobalStoreContextProvider(props) {
                 }
                 console.log(top5List.views)
                 updateList(top5List);
+        }
+    }
+
+    //UPDATES PUBLISH BUTTON
+    store.updatePublish = async function (id)
+    {
+        let response = await api.getTop5ListById(id);
+        if (response.status === 200) 
+        {
+            let top5List = response.data.top5List;
+            top5List.publish = true;
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(id, top5List);
+                    if (response.status === 200) {
+                        async function getListPairs(top5List) {
+                            response = await api.getTop5ListPairs();
+                            if (response.status === 200) {
+                                let pairsArray = response.data.idNamePairs;
+                                storeReducer({
+                                    type: GlobalStoreActionType.UPDATE_VIEWS,
+                                    payload: pairsArray
+                                });
+                            }
+                        }
+                        getListPairs(top5List)
+                    }
+                }
+                updateList(top5List);
+        }
+    }
+
+    //UPDATES LIKES BUTTON
+    store.updateLikes = async function (id)
+    {
+        let response = await api.getTop5ListById(id);
+        if (response.status === 200) 
+        {
+            let top5List = response.data.top5List;
+            if (!top5List.likes.includes(auth.user.email))
+            {
+                top5List.likes.push(auth.user.email)
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(id, top5List);
+                    if (response.status === 200) {
+                        async function getListPairs(top5List) {
+                            response = await api.getTop5ListPairs();
+                            if (response.status === 200) {
+                                let pairsArray = response.data.idNamePairs;
+                                storeReducer({
+                                    type: GlobalStoreActionType.UPDATE_VIEWS,
+                                    payload: pairsArray
+                                });
+                            }
+                        }
+                        getListPairs(top5List)
+                    }
+                }
+                updateList(top5List);
+            }
+        }
+    }
+
+    //UPDATES DISLIKES BUTTON
+    store.updateDislikes= async function (id)
+    {
+        let response = await api.getTop5ListById(id);
+        if (response.status === 200) 
+        {
+            let top5List = response.data.top5List;
+            if (!top5List.dislikes.includes(auth.user.email))
+            {
+                top5List.dislikes.push(auth.user.email)
+                async function updateList(top5List) {
+                    response = await api.updateTop5ListById(id, top5List);
+                    if (response.status === 200) {
+                        async function getListPairs(top5List) {
+                            response = await api.getTop5ListPairs();
+                            if (response.status === 200) {
+                                let pairsArray = response.data.idNamePairs;
+                                storeReducer({
+                                    type: GlobalStoreActionType.UPDATE_VIEWS,
+                                    payload: pairsArray
+                                });
+                            }
+                        }
+                        getListPairs(top5List)
+                    }
+                }
+                updateList(top5List);
+            }
         }
     }
 
@@ -365,10 +463,10 @@ function GlobalStoreContextProvider(props) {
     // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,
     // moveItem, updateItem, updateCurrentList, undo, and redo
     store.setCurrentList = async function (id) {
+        let top5List;
         let response = await api.getTop5ListById(id);
         if (response.status === 200) {
-            let top5List = response.data.top5List;
-            
+            top5List = response.data.top5List;
             response = await api.updateTop5ListById(top5List._id, top5List);
             if (response.status === 200) {
                 console.log(top5List)
@@ -376,10 +474,10 @@ function GlobalStoreContextProvider(props) {
                     type: GlobalStoreActionType.SET_CURRENT_LIST,
                     payload: top5List
                 });
-                console.log(this.currentList)
-                history.push("/top5list/" + top5List._id);
+                console.log(store.currentList) 
             }
         }
+        history.push("/top5list/" + top5List._id);
     }
 
     store.updateItem = function (index, newItem) {

@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography'
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -27,18 +28,26 @@ const HomeScreen = () => {
     console.log(store.idNamePairs)
     if (store) {
         listCard = 
+        
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.grey' }}>
+                <Grid container rowSpacing={1}>
             {
+                
                 store.idNamePairs.map((pair) => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}
                         username={pair.email}
                         views={pair.views}
+                        publish={pair.publish}
+                        date={pair.date}
+                        likes={pair.likes}
+                        dislikes={pair.dislikes}
                         selected={false}
                     />
                 ))
             }
+            </Grid>
             </List>;
     }
     return (
