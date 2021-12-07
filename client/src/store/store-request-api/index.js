@@ -36,10 +36,12 @@ export const createTop5List = (newListName, newItems, userEmail, setdate) => {
         publish: false
     })
 }
+
+export const getTop5Lists = () => api.get(`/top5lists/`)
 export const deleteTop5ListById = (id) => api.delete(`/top5list/${id}`)
 export const getTop5ListById = (id) => api.get(`/top5list/${id}`)
 export const getTop5ListPairs = () => api.get(`/top5listpairs/`)
-export const updateTop5ListById = (id, top5List) => {
+export const updateTop5List = (id, top5List) => {
     return api.put(`/top5list/${id}`, {
         // SPECIFY THE PAYLOAD
         top5List : top5List
@@ -51,7 +53,8 @@ const apis = {
     deleteTop5ListById,
     getTop5ListById,
     getTop5ListPairs,
-    updateTop5ListById
+    updateTop5List,
+    getTop5Lists
 }
 
 export default apis

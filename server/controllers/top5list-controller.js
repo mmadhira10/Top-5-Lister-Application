@@ -74,32 +74,14 @@ deleteTop5List = async (req, res) => {
 }
 
 getTop5ListById = async (req, res) => {
-    console.log("Find Top 5 List with id: " + JSON.stringify(req.params.id));
-
     await Top5List.findById({ _id: req.params.id }, (err, list) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
-        console.log("Found list: " + JSON.stringify(list));
-
-        // DOES THIS LIST BELONG TO THIS USER?
-        async function asyncFindUser(list) {
-            await User.findOne({ email: list.ownerEmail }, (err, user) => {
-                console.log("user._id: " + user._id);
-                console.log("req.userId: " + req.userId);
-                if (user._id == req.userId) {
-                    console.log("correct user!");
-                    return res.status(200).json({ success: true, top5List: list })
-                }
-                else {
-                    console.log("incorrect user!");
-                    return res.status(400).json({ success: false, description: "authentication error" });
-                }
-            });
-        }
-        asyncFindUser(list);
+        return res.status(200).json({ success: true, top5List: list })
     }).catch(err => console.log(err))
 }
+
 
 getTop5ListPairs = async (req, res) => {
     console.log("getTop5ListPairs");
@@ -154,15 +136,33 @@ getTop5Lists = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Top 5 Lists not found` })
         }
-        return res.status(200).json({ success: true, data: top5Lists })
+        else {
+            // PUT ALL THE LISTS INTO ID, NAME PAIRS
+            let pairs = [];
+            for (let key in top5Lists) {
+                let list = top5Lists[key];
+                let pair = {
+                    _id: list._id,
+                    items: list.items,
+                    name: list.name,
+                    email: list.ownerEmail,
+                    views: list.views,
+                    likes: list.likes,
+                    dislikes: list.dislikes,
+                    comments: list.comments,
+                    date: list.date,
+                    publish: list.publish
+                };
+                pairs.push(pair);
+            }
+            return res.status(200).json({ success: true, idNamePairs: pairs })
+        }
     }).catch(err => console.log(err))
 }
 
 updateTop5List = async (req, res) => {
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
-    console.log("req.body.name, req.body.items: " + req.body.name + ", " + req.body.items);
-
     if (!body) {
         return res.status(400).json({
             success: false,
@@ -179,49 +179,31 @@ updateTop5List = async (req, res) => {
             })
         }
 
-        // DOES THIS LIST BELONG TO THIS USER?
-        async function asyncFindUser(list) {
-            await User.findOne({ email: list.ownerEmail }, (err, user) => {
-                console.log("user._id: " + user._id);
-                console.log("req.userId: " + req.userId);
-                if (user._id == req.userId) {
-                    console.log("correct user!");
-                    console.log("req.body.name, req.body.items: " + req.body.name + ", " + req.body.items);
+        top5List.name = body.top5List.name
+        top5List.items = body.top5List.items
+        top5List.email = body.top5List.ownerEmail
+        top5List.views = body.top5List.views
+        top5List.likes = body.top5List.likes
+        top5List.dislikes = body.top5List.dislikes
+        top5List.publish = body.top5List.publish
 
-                    list.name = body.top5List.name;
-                    list.items = body.top5List.items;
-                    list.views = body.top5List.views;
-                    list.comments = body.top5List.comments;
-                    list.likes = body.top5List.likes;
-                    list.dislikes = body.top5List.dislikes;
-                    list.ownerEmail = body.top5List.ownerEmail;
-                    list.publish = body.top5List.publish;
-                    list.date = body.top5List.date;
-                    list
-                        .save()
-                        .then(() => {
-                            console.log("SUCCESS!!!");
-                            return res.status(200).json({
-                                success: true,
-                                id: list._id,
-                                message: 'Top 5 List updated!',
-                            })
-                        })
-                        .catch(error => {
-                            console.log("FAILURE: " + JSON.stringify(error));
-                            return res.status(404).json({
-                                error,
-                                message: 'Top 5 List not updated!',
-                            })
-                        })
-                }
-                else {
-                    console.log("incorrect user!");
-                    return res.status(400).json({ success: false, description: "authentication error" });
-                }
-            });
-        }
-        asyncFindUser(top5List);
+        top5List
+            .save()
+            .then(() => {
+                console.log("SUCCESS!!!");
+                return res.status(200).json({
+                    success: true,
+                    id: top5List._id,
+                    message: 'Top 5 List updated!',
+                })
+            })
+            .catch(error => {
+                console.log("FAILURE: " + JSON.stringify(error));
+                return res.status(404).json({
+                    error,
+                    message: 'Top 5 List not updated!',
+                })
+            })
     })
 }
 
