@@ -208,7 +208,7 @@ function GlobalStoreContextProvider(props) {
             let top5List = response.data.top5List;
             top5List.name = newName;
             async function updateList(top5List) {
-                response = await api.updateTop5(top5List._id, top5List);
+                response = await api.updateTop5List(top5List._id, top5List);
                 if (response.status === 200) {
                     async function getListPairs(top5List) {
                         response = await api.getTop5Lists();
@@ -332,8 +332,7 @@ function GlobalStoreContextProvider(props) {
     store.updatePublish = async function (id)
     {
         let response = await api.getTop5ListById(id);
-        if (response.status === 200) 
-        {
+        if (response.status === 200) {
             let top5List = response.data.top5List;
             top5List.publish = true;
                 async function updateList(top5List) {
